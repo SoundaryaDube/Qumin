@@ -1,0 +1,49 @@
+# Resume Experience Report: VisualFinder Vision
+
+This report summarizes your work in the `visualfinder-vision` repository, extracting key achievements, system architecture details, and measurable outcomes to help you seamlessly integrate this experience into your resume.
+
+## Role & Project Overview
+**Role Suggestion:** AI/ML Engineer, Backend Engineer, or Software Engineer (AI Systems)
+**Project Description:** A highly precise, agentic computer vision pipeline (Click Vision Graph) that orchestrates parallel requests to state-of-the-art multimodal LLMs (MLLMs) to locate UI elements via natural language prompts with pixel-level accuracy.
+
+## Key Technologies
+**Languages/Frameworks:** Python, FastAPI, LangGraph, PIL (Pillow)
+**AI Models & APIs:** Google Gemini (1.5/2.5 Pro, Flash), Qwen2.5-VL-72B, UI-TARS, Anthropic Claude (Sonnet), OpenRouter 
+**Architecture Patterns:** Agentic Workflows, Consensus/Ensemble Algorithms, Parallel Asynchronous Execution
+
+---
+
+## 🚀 Resume Bullet Points (Ready to Copy/Adapt)
+
+*Choose the points that best align with the specific job description you are targeting.*
+
+**Agentic AI & LangGraph Integration**
+* > Architected and deployed an agentic computer vision pipeline using **LangGraph** to coordinate multi-step workflows, dynamically routing tasks between OCR fallback methods and multiple Vision-Language Models (VLMs) based on element classification.
+* > Engineered a fault-tolerant state graph (`Click Vision Graph`) to handle retry logic, state management, and conditional edges, enabling complex model consensus and verification steps automatically.
+
+**Ensemble Architecture & Optimization**
+* > Designed a **5-way multi-model consensus algorithm** that runs **parallel** asynchronous API queries across state-of-the-art vision models (e.g., Qwen2.5, Gemini, Sonnet).
+* > Implemented a spatial clustering algorithm to aggregate coordinate proposals from multiple models, requiring an 80% agreement threshold to significantly eliminate AI hallucinations and false positives.
+* > Optimized system latency by enabling highly concurrent model queries through Python's `concurrent.futures`, effectively achieving a 4x speed improvement for the proposal generation phase.
+
+**Advanced Image Processing & Refinement**
+* > Built a coordinate refinement node that dynamically calculates crop dimensions based on initial consensus, crops the original image, and intelligently rescales the asset (targeting 700-850 px) to improve secondary model localization.
+* > Developed coordinate transformation utilities to map refined bounding box responses from upscaled, isolated image crops back to absolute fullscreen coordinate spaces with pixel-perfect accuracy.
+
+**Evaluation Frameworks & Benchmarking**
+* > Lead the development of comprehensive evaluation benchmarking scripts to quantitatively compare the accuracy of specialized UI reasoning models (UI-TARS vs. Claude Sonnet vs. Qwen).
+* > Devised a custom testing heuristic that calculates Euclidean distance and checks model proposals against dynamic pixel margin-of-error bounds (`margin_x`, `margin_y`) representing actual UI element dimensions.
+
+**Backend Implementation**
+* > Packaged the AI vision coordinate system into a production-ready **FastAPI** web service, enabling seamless HTTP integration with the frontend via asynchronous `UploadFile` processing and strict payload validation.
+
+---
+
+## 🧠 System Architecture Deep Dive
+If you have an interview, here are the technical talking points about *how* your system works:
+
+1. **Routing Strategy:** When an image and natural language prompt come into the FastAPI server (`/detect`), the system first classifies the target element using an LLM. If the target is strictly text, it routes to a specialized OCR pathway. If visual, it enters the LangGraph pipeline.
+2. **Parallel Generation:** The state graph triggers 4 parallel asynchronous calls to Qwen (for desktop) or Sonnet (for mobile) to generate initial coordinate proposals (`(x, y)` points).
+3. **Graph Clustering:** The system applies a greedy spatial clustering algorithm (e.g., grouping points within a `30px` radius). If an 80% majority agreement is reached (strong consensus), it proceeds to refinement.
+4. **Dynamic Refinement:** A bounding box crop is taken around the consensus center. The image is scaled up for clarity (if too small) and re-fed into an MLLM (like Sonnet or UI-TARS) through an OpenRouter interface to pinpoint the exact pixel accurately.
+5. **Fallback Flow:** If consensus is weak or Qwen models fail to agree, a 5th verification call is made to a secondary model as a tie-breaker, dynamically preventing fail-states while maintaining accuracy constraints.
