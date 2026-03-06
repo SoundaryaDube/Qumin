@@ -13,7 +13,7 @@ This report summarizes your work in the `visualfinder-vision` repository, extrac
 
 ---
 
-## 🚀 Resume Bullet Points (Ready to Copy/Adapt)
+##  Resume Bullet Points (Ready to Copy/Adapt)
 
 *Choose the points that best align with the specific job description you are targeting.*
 
@@ -39,7 +39,7 @@ This report summarizes your work in the `visualfinder-vision` repository, extrac
 
 ---
 
-## 🧠 System Architecture Deep Dive
+##  System Architecture Deep Dive
 If you have an interview, here are the technical talking points about *how* your system works:
 
 1. **Routing Strategy:** When an image and natural language prompt come into the FastAPI server (`/detect`), the system first classifies the target element using an LLM. If the target is strictly text, it routes to a specialized OCR pathway. If visual, it enters the LangGraph pipeline.
@@ -47,3 +47,4 @@ If you have an interview, here are the technical talking points about *how* your
 3. **Graph Clustering:** The system applies a greedy spatial clustering algorithm (e.g., grouping points within a `30px` radius). If an 80% majority agreement is reached (strong consensus), it proceeds to refinement.
 4. **Dynamic Refinement:** A bounding box crop is taken around the consensus center. The image is scaled up for clarity (if too small) and re-fed into an MLLM (like Sonnet or UI-TARS) through an OpenRouter interface to pinpoint the exact pixel accurately.
 5. **Fallback Flow:** If consensus is weak or Qwen models fail to agree, a 5th verification call is made to a secondary model as a tie-breaker, dynamically preventing fail-states while maintaining accuracy constraints.
+
